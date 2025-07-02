@@ -1,0 +1,130 @@
+:root {
+  --color-light-blue: #d7e0ff;
+  --color-dark-blue: #1e213f;
+  --color-dark-blue-2: #161932;
+  --color-white: #fff;
+  --color-light-grey: #eff1fa;
+  --font-size-h1: 10rem;
+  --font-size-h2: 2.8rem;
+  --font-size-h3: 1.6rem;
+  --font-size-h4: 1.3rem;
+  --font-size-body-1: 1.4rem;
+  --font-size-body-2: 1.2rem;
+  --line-height-h1: 12rem;
+  --line-height-h2: 3.4rem;
+  --line-height-h3: 1.9rem;
+  --line-height-h4: 1.6rem;
+  --line-height-body-1: 1.8rem;
+  --line-height-body-2: 1.4rem;
+  --letter-spacing-h3: 1.5rem;
+  --letter-spacing-h4: 0.5rem;
+
+  /* Diff Colors. */
+  --blue: #70f3f8;
+  --red : #f87070;
+  --purple : #d881f8;
+}
+
+html {
+}
+
+/* =========
+HELPING CLASSESS
+========= */
+
+.flex {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.border-box {
+  box-sizing: border-box;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+body {
+  padding: 120px;
+}
+
+/* ========
+MODE CHANGE
+======= */
+.mode-change-container {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  height: 60px;
+  background-color: var(--color-dark-blue);
+  border-radius: 50px;
+  padding: 6px;
+}
+
+.highlighter {
+  position: absolute;
+  top: 6px;
+  height: calc(100% - 12px);
+  border-radius: 30px;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  z-index: 0;
+}
+
+.body--blue .highlighter{
+    background-color: var(--blue);
+}
+
+.body--red .highlighter{
+    background-color: var(--red);
+}
+
+.body--purple .highlighter{
+    background-color: var(--purple);
+}
+
+.mode-change-btn {
+  background-color: transparent;
+  color: var(--color-light-grey);
+  outline: none;
+  border: none;
+  width: 33.333%;
+  height: 100%;
+  border-radius: 30px;
+  font-weight: 700;
+  opacity: 0.7;
+  font-size: 12px;
+  transition: color 0.3s ease, opacity 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.mode-change-btn--active {
+  opacity: 1;
+  color: var(--color-dark-blue-2);
+}
+
+.mode-change-btn:not(.mode-change-btn--active):hover {
+  opacity: 1;
+}
+
+@media screen and (min-width: 600px) {
+  .mode-change-container {
+    height: 65px;
+  }
+  .mode-change-btn {
+    font-size: 14px;
+  }
+}
+

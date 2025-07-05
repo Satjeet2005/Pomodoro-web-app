@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/style.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
+    <link rel="stylesheet" href="/css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,19 +16,334 @@
     />
     <title>Pomodoro</title>
   </head>
-  <body class="body--purple">
-    <header>
+  <body class="body--purple body--space-mono">
+    <div class="backdrop"></div>
+    <header class="flex flex-col align-center">
+      <img src="/assets/logo.svg" alt="logo" class="logo" />
       <section
         class="mode-change-container flex justify-between align-center border-box"
       >
-        <button class="mode-change-btn clickable mode-change-btn--active">pomodoro</button>
-        <button class="mode-change-btn clickable">short break</button>
-        <button class="mode-change-btn clickable">
+        <button
+          class="mode-change-btn clickable mode-change-btn--active"
+          id="pomodoro-mode-btn"
+          data-mode-type="pomodoro"
+        >
+          pomodoro
+        </button>
+        <button
+          class="mode-change-btn clickable"
+          id="shortbreak-mode-btn"
+          data-mode-type="shortbreak"
+        >
+          short break
+        </button>
+        <button
+          class="mode-change-btn clickable"
+          id="longbreak-mode-btn"
+          data-mode-type="longbreak"
+        >
           long break
         </button>
         <div class="highlighter"></div>
       </section>
     </header>
+
+    <main>
+      <section>
+        <div class="pomodoro-container">
+          <div class="progress-ring__wrapper">
+            <svg class="progress-ring">
+              <circle
+                class="progress-ring__inner-border"
+                r="45%"
+                cx="50%"
+                cy="50%"
+              />
+              <circle
+                class="progress-ring__circle"
+                r="40%"
+                cx="50%"
+                cy="50%"
+                data-small-radius="140.8"
+                data-large-radius="188"
+              />
+            </svg>
+          </div>
+          <div class="timer-display__wrapper">
+            <div
+              class="timer-display"
+              id="pomodoro-time-display"
+              data-timer-type="pomodoro"
+            >
+              25:00
+            </div>
+            <div
+              class="timer-display hidden"
+              id="shortbreak-time-display"
+              data-timer-type="shortbreak"
+            >
+              05:00
+            </div>
+            <div
+              class="timer-display hidden"
+              id="longbreak-time-display"
+              data-timer-type="longbreak"
+            >
+              15:00
+            </div>
+            <button id="start-btn" class="timer-display__btn">Start</button>
+            <button id="restart-btn" class="timer-display__btn hidden">
+              Restart
+            </button>
+            <button id="pause-btn" class="timer-display__btn hidden">
+              Pause
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings Modal Section -->
+      <section class="settings-container-wrapper hidden">
+        <div class="settings-container animate__animated">
+          <!-- Settings Header: Title and Close Button -->
+          <div class="settings-header flex justify-between align-center">
+            <h3 class="settings-main-heading">Settings</h3>
+            <!-- Close icon for the settings modal -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              class="close-btn clickable"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11.95.636l1.414 1.414L8.414 7l4.95 4.95-1.414 1.414L7 8.414l-4.95 4.95L.636 11.95 5.586 7 .636 2.05 2.05.636 7 5.586l4.95-4.95z"
+                opacity=".5"
+              />
+            </svg>
+          </div>
+
+          <!-- Main Settings Content -->
+          <div class="settings-main">
+            <!-- Timer Settings Section -->
+            <h4 class="pomodoro-timer-settings-heading uppercase">
+              time (minutes)
+            </h4>
+            <div class="time-settings border-box">
+              <!-- Pomodoro Timer Input -->
+              <div class="pomodoro-timer-settings">
+                <p class="settings-text">pomodoro</p>
+                <div class="timer-input-container border-box">
+                  <input
+                    type="number"
+                    id="pomodoro-timer"
+                    value="25"
+                    class="timer-input border-box"
+                    min="1"
+                  />
+                  <!-- Up/Down arrows for increment/decrement -->
+                  <div class="flex flex-col g-8">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="7"
+                      class="arrow arrow-up clickable"
+                    >
+                      <path
+                        stroke-opacity=".25"
+                        stroke-width="2"
+                        d="M1 6l6-4 6 4"
+                      />
+                    </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="7"
+                      class="arrow arrow-down clickable"
+                    >
+                      <path
+                        stroke-opacity=".25"
+                        stroke-width="2"
+                        d="M1 1l6 4 6-4"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Short Break Timer Input -->
+              <div class="pomodoro-timer-settings">
+                <p class="settings-text">short break</p>
+                <div class="timer-input-container border-box">
+                  <input
+                    type="number"
+                    id="shortbreak-timer"
+                    value="5"
+                    class="timer-input border-box"
+                    min="1"
+                  />
+                  <div class="flex flex-col g-8">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="7"
+                      class="arrow arrow-up clickable"
+                    >
+                      <path
+                        stroke-opacity=".25"
+                        stroke-width="2"
+                        d="M1 6l6-4 6 4"
+                      />
+                    </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="7"
+                      class="arrow arrow-down clickable"
+                    >
+                      <path
+                        stroke-opacity=".25"
+                        stroke-width="2"
+                        d="M1 1l6 4 6-4"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Long Break Timer Input -->
+              <div class="pomodoro-timer-settings">
+                <p class="settings-text">long break</p>
+                <div class="timer-input-container border-box">
+                  <input
+                    type="number"
+                    id="longbreak-timer"
+                    value="15"
+                    class="timer-input border-box"
+                    min="1"
+                  />
+                  <div class="flex flex-col g-8 clickable">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="7"
+                      class="arrow arrow-up clickable"
+                    >
+                      <path
+                        stroke-opacity=".25"
+                        stroke-width="2"
+                        d="M1 6l6-4 6 4"
+                      />
+                    </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="7"
+                      class="arrow arrow-down clickable"
+                    >
+                      <path
+                        stroke-opacity=".25"
+                        stroke-width="2"
+                        d="M1 1l6 4 6-4"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Error Message: Shown if timer is running and user tries to change time -->
+              <div>
+                <p class="time-error-text hidden">
+                  The pomodoro timer is running. You cannot change its value
+                </p>
+              </div>
+            </div>
+
+            <!-- Font Selection Section -->
+            <div class="font-settings">
+              <h4 class="pomodoro-timer-settings-heading uppercase">font</h4>
+              <div class="flex justify-center g-15">
+                <!-- Each radio input lets the user pick a font for the timer -->
+                <input
+                  type="radio"
+                  id="kumbh-sans-input"
+                  class="font-radio-input clickable"
+                  data-font="kumbh-sans"
+                />
+                <input
+                  type="radio"
+                  id="roboto-slabs-input"
+                  class="font-radio-input clickable"
+                  data-font="roboto-slabs"
+                />
+                <input
+                  type="radio"
+                  id="space-mono-input"
+                  class="font-radio-input clickable font-radio-input--active"
+                  data-font="space-mono"
+                />
+              </div>
+            </div>
+
+            <!-- Color Theme Selection Section -->
+            <div class="color-settings">
+              <h4 class="pomodoro-timer-settings-heading uppercase">color</h4>
+              <div class="flex justify-center g-15">
+                <!-- Each color option is a clickable div with a checkmark if selected -->
+                <div
+                  id="red-input"
+                  class="color-radio-input clickable"
+                  data-color="red"
+                >
+                  <div class="check opacity-0"></div>
+                </div>
+                <div
+                  id="blue-input"
+                  class="color-radio-input clickable"
+                  data-color="blue"
+                >
+                  <div class="check opacity-0"></div>
+                </div>
+                <div
+                  id="purple-input"
+                  class="color-radio-input clickable"
+                  data-color="purple"
+                >
+                  <div class="check"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Settings Footer: Apply Button -->
+          <div class="settings-footer">
+            <div class="apply-button clickable">Apply</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="error__section">
+        <div class="error__wrapper animate__animated hidden">
+          <p class="error__text">A timer is running. Pause it to change mode</p>
+          <p class="error__text hidden">force pre</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="28"
+        height="28"
+        class="settings-icon"
+      >
+        <path
+          fill="#D7E0FF"
+          d="M26.965 17.682l-2.927-2.317c.055-.448.097-.903.097-1.365 0-.462-.042-.917-.097-1.365l2.934-2.317a.702.702 0 00.167-.896l-2.775-4.851a.683.683 0 00-.847-.301l-3.454 1.407a10.506 10.506 0 00-2.345-1.379l-.52-3.71A.716.716 0 0016.503 0h-5.55a.703.703 0 00-.687.588l-.52 3.71c-.847.357-1.63.819-2.345 1.379L3.947 4.27a.691.691 0 00-.847.301L.325 9.422a.705.705 0 00.167.896l2.927 2.317c-.055.448-.097.903-.097 1.365 0 .462.042.917.097 1.365L.492 17.682a.702.702 0 00-.167.896L3.1 23.429a.683.683 0 00.847.301L7.4 22.323a10.506 10.506 0 002.345 1.379l.52 3.71c.056.329.34.588.687.588h5.55a.703.703 0 00.687-.588l.52-3.71c.847-.357 1.631-.819 2.346-1.379l3.454 1.407c.313.119.673 0 .847-.301l2.775-4.851a.705.705 0 00-.167-.896zM13.73 18.9c-2.685 0-4.857-2.191-4.857-4.9 0-2.709 2.172-4.9 4.857-4.9 2.684 0 4.856 2.191 4.856 4.9 0 2.71-2.172 4.9-4.856 4.9z"
+          opacity=".5"
+        />
+      </svg>
+    </footer>
   </body>
 
   <script src="/js/script.js"></script>

@@ -1,78 +1,143 @@
+/* 
+========================================
+POMODORO APP MAIN STYLESHEET
+- All variables, helpers, layout, and UI
+- Readable, organized, and commented
+========================================
+*/
+
+/* =========================
+   COLOR & FONT VARIABLES
+========================= */
 :root {
+  /* Color Palette */
   --color-light-blue: #d7e0ff;
   --color-dark-blue: #1e213f;
   --color-dark-blue-2: #161932;
   --color-white: #fff;
   --color-light-grey: #eff1fa;
-  --font-size-h1: 10rem;
-  --font-size-h2: 2.8rem;
-  --font-size-h3: 1.6rem;
-  --font-size-h4: 1.3rem;
-  --font-size-body-1: 1.4rem;
-  --font-size-body-2: 1.2rem;
-  --line-height-h1: 12rem;
-  --line-height-h2: 3.4rem;
-  --line-height-h3: 1.9rem;
-  --line-height-h4: 1.6rem;
-  --line-height-body-1: 1.8rem;
-  --line-height-body-2: 1.4rem;
-  --letter-spacing-h3: 1.5rem;
-  --letter-spacing-h4: 0.5rem;
 
-  /* Diff Colors. */
+  /* Theme Colors */
   --blue: #70f3f8;
-  --red : #f87070;
-  --purple : #d881f8;
+  --red: #f87070;
+  --purple: #d881f8;
+
+  /* Font Families */
+  --kumbh-sans: "Kumbh Sans";
+  --roboto-slab: "Roboto Slab";
+  --space-mono: "Space Mono";
 }
 
-html {
-}
-
-/* =========
-HELPING CLASSESS
-========= */
-
+/* =========================
+   UTILITY & HELPER CLASSES
+========================= */
 .flex {
   display: flex;
 }
-
+.flex-col {
+  flex-direction: column;
+}
+.g-5 {
+  gap: 5px;
+}
+.g-8 {
+  gap: 8px;
+}
+.g-10 {
+  gap: 10px;
+}
+.g-12 {
+  gap: 12px;
+}
+.g-15 {
+  gap: 15px;
+}
 .justify-between {
   justify-content: space-between;
 }
-
 .justify-center {
   justify-content: center;
 }
-
 .align-center {
   align-items: center;
 }
-
 .border-box {
   box-sizing: border-box;
 }
-
 .clickable {
   cursor: pointer;
 }
-
-body {
-  padding: 120px;
+.uppercase {
+  text-transform: uppercase;
+}
+.capitalize {
+  text-transform: capitalize;
+}
+.opacity-0 {
+  opacity: 0;
+}
+.hidden {
+  display: none;
 }
 
-/* ========
-MODE CHANGE
-======= */
+/* =========================
+   BODY & GLOBAL LAYOUT
+========================= */
+body {
+  padding-top: 60px;
+  background-color: var(--color-dark-blue);
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Font family themes for body */
+.body--kumbh-sans {
+  font-family: var(--kumbh-sans);
+}
+.body--roboto-slabs {
+  font-family: var(--roboto-slab);
+}
+.body--space-mono {
+  font-family: var(--space-mono);
+}
+
+/* Logo styling */
+.logo {
+  margin-bottom: 30px;
+  width: 120px;
+}
+@media screen and (min-width: 600px) {
+  .logo {
+    margin-bottom: 40px;
+    width: 153px;
+  }
+}
+
+/* =========================
+   MODE SWITCHER (Pomodoro/Break)
+========================= */
 .mode-change-container {
   position: relative;
-  width: 100%;
-  max-width: 450px;
+  width: 350px;
   height: 60px;
-  background-color: var(--color-dark-blue);
+  background-color: var(--color-dark-blue-2);
   border-radius: 50px;
   padding: 6px;
+  z-index: 1;
+}
+@media screen and (min-width: 600px) {
+  .mode-change-container {
+    width: 450px;
+  }
 }
 
+/* Animated highlighter bar under active mode */
 .highlighter {
   position: absolute;
   top: 6px;
@@ -81,25 +146,24 @@ MODE CHANGE
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   z-index: 0;
 }
-
-.body--blue .highlighter{
-    background-color: var(--blue);
+.body--blue .highlighter {
+  background-color: var(--blue);
+}
+.body--red .highlighter {
+  background-color: var(--red);
+}
+.body--purple .highlighter {
+  background-color: var(--purple);
 }
 
-.body--red .highlighter{
-    background-color: var(--red);
-}
-
-.body--purple .highlighter{
-    background-color: var(--purple);
-}
-
+/* Mode buttons */
 .mode-change-btn {
   background-color: transparent;
+  font-family: inherit;
   color: var(--color-light-grey);
   outline: none;
   border: none;
-  width: 33.333%;
+  width: 100%;
   height: 100%;
   border-radius: 30px;
   font-weight: 700;
@@ -109,22 +173,546 @@ MODE CHANGE
   position: relative;
   z-index: 1;
 }
-
 .mode-change-btn--active {
   opacity: 1;
   color: var(--color-dark-blue-2);
 }
-
 .mode-change-btn:not(.mode-change-btn--active):hover {
   opacity: 1;
 }
-
 @media screen and (min-width: 600px) {
   .mode-change-container {
     height: 65px;
   }
   .mode-change-btn {
     font-size: 14px;
+  }
+}
+
+/* =========================
+   MODAL BACKDROP
+========================= */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.backdrop--active {
+  opacity: 1;
+}
+
+/* =========================
+   SETTINGS MODAL
+========================= */
+.settings-container-wrapper {
+  max-width: 330px;
+  top: 50%;
+  left: 50%;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  width: 100%;
+}
+@media screen and (min-width: 600px) {
+  .settings-container-wrapper {
+    max-width: 588px;
+  }
+}
+.settings-container {
+  background-color: var(--color-white);
+  border-radius: 25px;
+}
+
+/* Modal header (title & close) */
+.settings-header {
+  padding: 30px 30px;
+  border-bottom: 1px solid var(--color-light-blue);
+}
+.settings-main-heading {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+@media screen and (min-width: 600px) {
+  .settings-main-heading {
+    font-size: 28px;
+  }
+}
+.close-btn path {
+  fill: #1e213f;
+  transition: all 0.2s linear;
+}
+.close-btn:hover path {
+  opacity: 1;
+}
+
+/* Modal main content */
+.settings-main {
+  padding: 0px 30px 40px 30px;
+}
+@media screen and (min-width: 600px) {
+  .settings-main {
+    padding: 0 40px 50px 40px;
+  }
+}
+
+/* Timer settings section */
+.time-settings {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-light-blue);
+}
+@media screen and (min-width: 600px) {
+  .time-settings {
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 40px;
+    position: relative;
+  }
+}
+.pomodoro-timer-settings-heading {
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 5px;
+  text-align: center;
+  margin: 0;
+  margin-top: 20px;
+  margin-bottom: 14px;
+}
+@media screen and (min-width: 600px) {
+  .pomodoro-timer-settings-heading {
+    font-size: 14px;
+    text-align: left;
+    margin-bottom: 20px;
+    padding-left: 3px;
+  }
+}
+.settings-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: grey;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+  margin: 0;
+}
+
+/* Timer input box styling */
+.timer-input-container {
+  height: 48px;
+  width: 150px;
+  background-color: var(--color-light-grey);
+  border-radius: 10px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+}
+@media screen and (min-width: 600px) {
+  .timer-input-container {
+    margin-top: 8px;
+    height: 54px;
+  }
+}
+.timer-input {
+  border: none;
+  background-color: transparent;
+  font-weight: 700;
+  font-size: 15px;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  appearance: textfield;
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+}
+.timer-input:focus {
+  border: none;
+  outline: none;
+}
+
+/* Arrow icons for timer input */
+.arrow {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.arrow path {
+  fill: none;
+  stroke: #1e213f;
+}
+.arrow:hover path {
+  fill: none;
+  stroke: var(--color-dark-blue);
+  stroke-opacity: 1;
+}
+
+/* Timer input row/column layout */
+.pomodoro-timer-settings {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@media screen and (min-width: 600px) {
+  .pomodoro-timer-settings {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* =========================
+   FONT SETTINGS (RADIO)
+========================= */
+.font-settings {
+  border-bottom: 1px solid var(--color-light-blue);
+  padding-bottom: 20px;
+}
+@media screen and (min-width: 600px) {
+  .font-settings {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+.font-radio-input {
+  height: 40px;
+  width: 40px;
+  appearance: none;
+  border-radius: 100px;
+  background-color: var(--color-light-grey);
+  position: relative;
+  font-size: 16px;
+  outline: -9px solid var(--color-light-blue);
+  transition: all 0.1s ease, background-color 0.4s ease;
+  margin: 0;
+}
+.font-radio-input:hover {
+  outline: 1px solid var(--color-light-blue);
+  outline-offset: 5px;
+}
+.font-radio-input--active {
+  background-color: black;
+  color: white;
+}
+.font-radio-input::before {
+  content: "Aa";
+  position: absolute;
+}
+#kumbh-sans-input {
+  font-weight: 500;
+}
+#kumbh-sans-input::before {
+  font-family: var(--kumbh-sans);
+  top: 10px;
+  left: 9.5px;
+}
+#roboto-slabs-input {
+  font-weight: 500;
+}
+#roboto-slabs-input::before {
+  font-family: var(--roboto-slab);
+  top: 9px;
+  left: 9.5px;
+}
+#space-mono-input {
+  font-weight: 600;
+}
+#space-mono-input::before {
+  font-family: var(--space-mono);
+  font-weight: 600;
+  left: 10px;
+  top: 8px;
+}
+
+/* =========================
+   COLOR THEME PICKER
+========================= */
+.color-settings {
+  padding-bottom: 20px;
+}
+@media screen and (min-width: 600px) {
+  .color-settings {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+.color-radio-input {
+  height: 40px;
+  width: 40px;
+  appearance: none;
+  border-radius: 100px;
+  position: relative;
+  font-size: 16px;
+  outline: -9px solid var(--color-light-blue);
+  transition: all 0.1s ease;
+  margin: 0;
+}
+.color-radio-input:hover {
+  outline: 1px solid var(--color-light-blue);
+  outline-offset: 5px;
+}
+/* Checkmark for selected color */
+.check {
+  height: 12px;
+  width: 6px;
+  border-bottom: 2.7px solid black;
+  border-right: 2.7px solid black;
+  transform: rotate(45deg);
+  margin: 20px;
+  position: absolute;
+  top: -9px;
+  left: -4px;
+  transition: all 0.4s ease;
+}
+#blue-input {
+  background-color: var(--blue);
+}
+#red-input {
+  background-color: var(--red);
+}
+#purple-input {
+  background-color: var(--purple);
+}
+
+/* =========================
+   SETTINGS APPLY BUTTON
+========================= */
+.settings-footer {
+  position: relative;
+}
+.apply-button::before {
+  content: "";
+  background-color: white;
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 100px;
+  opacity: 0;
+  transition: all 0.3s linear;
+}
+.apply-button {
+  width: 140px;
+  height: 56px;
+  border-radius: 100px;
+  background-color: var(--red);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  color: white;
+  position: absolute;
+  bottom: -26px;
+  left: 50%;
+  transform: translate(-50%);
+}
+.apply-button:hover::before {
+  opacity: 0.15;
+}
+
+/* =========================
+   TIMER DISPLAY & PROGRESS
+========================= */
+.pomodoro-container {
+  position: relative;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+@media screen and (min-width: 600px) {
+  .pomodoro-container {
+    margin-top: 70px;
+  }
+}
+
+/* Circular progress ring background */
+.progress-ring__wrapper {
+  width: 360px;
+  height: 360px;
+  background-image: linear-gradient(to bottom right, #0e112a, #2e325a);
+  border-radius: 50%;
+  box-shadow: -5rem -5rem 10rem 0 #272c5a, 5rem 5rem 10rem 0 #121530;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media screen and (min-width: 600px) {
+  .progress-ring__wrapper {
+    background-image: linear-gradient(to bottom right, #0e112a, #2e325a);
+    border-radius: 50%;
+    box-shadow: -5rem -5rem 10rem 0 #272c5a, 5rem 5rem 10rem 0 #121530;
+    width: 485px;
+    height: 485px;
+  }
+}
+
+/* SVG progress ring */
+.progress-ring {
+  width: 352px;
+  height: 352px;
+  transform: rotate(-90deg);
+}
+@media screen and (min-width: 600px) {
+  .progress-ring {
+    width: 470px;
+    height: 470px;
+  }
+}
+.progress-ring__inner-border {
+  fill: var(--color-dark-blue-2);
+  stroke: none;
+}
+.progress-ring__circle {
+  fill: none;
+  stroke-width: 12;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+@media screen and (min-width: 600px) {
+  .progress-ring__circle {
+    stroke-dasharray: 1180.64;
+    stroke-dashoffset: 0;
+  }
+}
+.body--blue .progress-ring__circle {
+  stroke: var(--blue);
+}
+.body--purple .progress-ring__circle {
+  stroke: var(--purple);
+}
+.body--red .progress-ring__circle {
+  stroke: var(--red);
+}
+
+/* Timer display and buttons */
+.timer-display__wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  display: flex;
+  flex-direction: column;
+}
+@media screen and (min-width: 600px) {
+  .timer-display__wrapper {
+    transform: translate(-50%, -50%);
+  }
+}
+.timer-display {
+  margin: 0;
+  font-size: 70px;
+  color: white;
+  font-weight: 700;
+}
+@media screen and (min-width: 600px) {
+  .timer-display {
+    font-size: 100px;
+  }
+}
+.timer-display__btn {
+  margin: 0;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 15px;
+  padding-left: 20px;
+  margin-top: 20px;
+  transition: all 0.2s linear;
+  cursor: pointer;
+}
+@media screen and (min-width: 600px) {
+  .timer-display__btn {
+    font-size: 16px;
+  }
+}
+.body--blue .timer-display__btn:hover {
+  color: var(--blue);
+}
+.body--purple .timer-display__btn:hover {
+  color: var(--purple);
+}
+.body--red .timer-display__btn:hover {
+  color: var(--red);
+}
+
+/* =========================
+   ERROR MESSAGE POPUP
+========================= */
+.error__section {
+  position: absolute;
+  left: 50%;
+  bottom: 10%;
+  transform: translate(-50%, -50%);
+}
+.error__wrapper {
+  background-color: white;
+  border-radius: 30px;
+  text-align: center;
+  padding: 25px;
+}
+@media screen and (min-width: 600px) {
+  .error__wrapper {
+    padding: 40px;
+  }
+}
+.error__text {
+  color: black;
+  font-size: 14px;
+  margin: 0;
+  font-weight: 700;
+}
+@media screen and (min-width: 600px) {
+  .error__text {
+    font-size: 18px;
+  }
+}
+
+/* =========================
+   SETTINGS ICON (FOOTER)
+========================= */
+.settings-icon {
+  margin-top: 60px;
+  cursor: pointer;
+}
+.settings-icon:hover path {
+  opacity: 1;
+}
+
+/* =========================
+   TIMER INPUT ERROR MESSAGE
+========================= */
+.time-error-text {
+  color: red;
+  font-size: 11px;
+  margin-top: 14px;
+  font-weight: 600;
+}
+@media screen and (min-width: 600px) {
+  .time-error-text {
+    position: absolute;
+    left: 0;
+    bottom: 0;
   }
 }
 
